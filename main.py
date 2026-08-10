@@ -1,5 +1,8 @@
 from openai import OpenAI
 from dotenv import load_dotenv
+from typing import Iterable
+from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
+
 import os
 import argparse
 
@@ -19,12 +22,11 @@ def main():
         api_key=api_key
     )
     
-    response = client.chat.completions.create(model='openrouter/free', messages=[
-        {
-            "role": "user",
-            "content": args.user_prompt,
-        }
-    ])
+    messages: Iterable[ChatCompletionMessageParam] = [
+        {"role": "user", "content": args.user_prompt}
+    ]
+    
+    response = client.chat.completions.create(model='openrouter/free', messages=messages)
    
     usages = response.usage
     if usages is None:
