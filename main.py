@@ -9,6 +9,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Chatbot')
     parser.add_argument('user_prompt', type=str, help="User prompt")
+    parser.add_argument('--verbose', action="store_true", help="Enable verbose output")
     args = parser.parse_args()
     
     load_dotenv()
@@ -34,8 +35,10 @@ def main():
     prompt_tokens = usages.prompt_tokens
     completion_tokens = usages.completion_tokens
    
-    print("Prompt tokens:", prompt_tokens)
-    print("Response tokens:", completion_tokens) 
+    if args.verbose:
+        print("User prompt:", args.user_prompt)
+        print("Prompt tokens:", prompt_tokens)
+        print("Response tokens:", completion_tokens) 
     print("Response:")
     print(response.choices[0].message.content)
 
