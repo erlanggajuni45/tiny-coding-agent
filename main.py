@@ -20,7 +20,16 @@ def main():
             "content": "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.",
         }
     ])
-    
+   
+    usages = response.usage
+    if usages is None:
+        raise RuntimeError("failed to make request, try again")
+    prompt_tokens = usages.prompt_tokens
+    completion_tokens = usages.completion_tokens
+   
+    print("Prompt tokens:", prompt_tokens)
+    print("Response tokens:", completion_tokens) 
+    print("Response:")
     print(response.choices[0].message.content)
 
 if __name__ == "__main__":
