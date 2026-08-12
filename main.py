@@ -4,10 +4,10 @@ from typing import Iterable
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 from prompts import system_prompt
 from call_function import available_functions
+from functions.call_function import call_function
 
 import os
 import argparse
-import json
 
 def main():
     parser = argparse.ArgumentParser(description='Chatbot')
@@ -54,8 +54,13 @@ def main():
     for tool_call in message.tool_calls:
         if tool_call.type != "function":
             continue
-        function_args = json.loads(tool_call.function.arguments or "{}")
-        print(f"Calling function: {tool_call.function.name}({function_args})")        
+        result_message = call_function(tool_call, args.verbose)
+        if len(result_message['content']) == 0:
+            raise Exception('content is empty')
+        if args.verbose:
+            print(f"-> {result_message['content']}")
+        else:
+            print(result_message['content'])
 
 
 if __name__ == "__main__":
