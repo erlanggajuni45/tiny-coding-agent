@@ -1,5 +1,4 @@
 import os
-from openai.types.chat.chat_completion_tool_union_param import ChatCompletionToolUnionParam
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
     try:
